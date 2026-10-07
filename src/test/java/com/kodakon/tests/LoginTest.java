@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import static org.openqa.selenium.support.locators.RelativeLocator.with;
+import org.openqa.selenium.WebElement;
 
 public class LoginTest {
 
@@ -58,6 +60,15 @@ public class LoginTest {
         ).getText();
         Assert.assertTrue(error.contains("do not match"),
                 "Expected a 'do not match' error but got: " + error);
+    }
+
+    // Relative locator: the input BELOW the username box should be the password box
+    @Test
+    public void passwordFieldIsBelowUsername() {
+        WebElement field = driver.findElement(
+                with(By.tagName("input")).below(By.id("user-name")));
+        Assert.assertEquals(field.getDomAttribute("id"), "password",
+                "The field below username is not the password field");
     }
 
     // Runs AFTER each test, even if it failed: close the browser
